@@ -16,6 +16,16 @@
 //                             }
 // https://docs.rs/rodio/latest/rodio/
 
+use std::fs::File;
+use std::io::BufReader;
+use std::time::Duration;
+use rodio::{Decoder, OutputStream, Sink};
+use rodio::source::{SineWave, Source};
+
 fn main () {
-    
+    let (_stream, stream_handle) = OutputStream::try_default().unwrap();
+    let sink = Sink::try_new(&stream_handle).unwrap();
+
+    let source = SineWave::new(440.0).take_duration(Duration::from_secs_f32(2.0)).amplify(0.20);
+    sink.append(source);
 }
